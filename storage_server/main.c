@@ -2,19 +2,6 @@
 
 const char *storage_directory;
 
-// int main(int argc, char *argv[]) {
-//     if (argc != 4) {
-//         fprintf(stderr, "Usage: %s <NM_IP> <NM_Port> <Directory>\n", argv[0]);
-//         exit(1);
-//     }
-
-//     const char *nm_ip = argv[1];
-//     int nm_port = atoi(argv[2]);
-//     storage_directory = argv[3];
-    
-//     init_lock_manager();
-//     initialize_storage_server(nm_ip, nm_port);
-
 int main(int argc, char *argv[]) {
     if (argc < 4 || argc > 5) {
         fprintf(stderr, "Usage: %s <NM_IP> <NM_Port> <Directory> [NM_Connection_Port]\n", argv[0]);

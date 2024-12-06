@@ -71,22 +71,6 @@ int handle_read(int sock_NM, const char *file_path)
     }
     else if (recv_nm_to_client.e_code == MAIN_SERVER_DOWN){
         SS_to_NM_struct data;
-        // if (recv(sock_NM, &data, sizeof(data), 0) <= 0) {
-        //     perror("ERROR receiving initial data");
-        //     return -1;
-        // }
-        // while (1) {
-        //     if (recv(sock_NM, &data, sizeof(data), 0) <= 0) {
-        //         perror("ERROR receiving file data");
-        //         break;
-        //     }
-            
-        //     if (data.stop) {
-        //         break;
-        //     }
-            
-        //     printf("%s", data.buffer);
-        // }
         if (recv(sock_NM, &data, sizeof(data), MSG_WAITALL) <= 0) {
             perror("ERROR receiving file data");
         }
@@ -106,7 +90,6 @@ void *async_send_thread(void *arg)
     async_write_args *write_info = (async_write_args *)arg;
     send(write_info->sock_SS, write_info->buffer, sizeof(write_info->buffer), 0);
     printf("Sent sent sent\n");
-    // close(write_info->sock_SS);
     free(write_info);
     return NULL;
 }

@@ -23,8 +23,6 @@
 #include <limits.h>
 #include <sys/ioctl.h>
 #include <stdarg.h>
-// #include <zip.h>
-// #include <unzip.h>
 
 // Client
 #define MAX_TOKENS 5

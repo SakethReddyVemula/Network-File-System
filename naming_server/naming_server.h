@@ -1,21 +1,7 @@
 #ifndef __NAMING_SERVER_H
 #define __NAMING_SERVER_H
 
-
 #include "../common/common.h"
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
-// #include <unistd.h>
-// #include <arpa/inet.h>
-// #include <netinet/in.h>
-// #include <sys/socket.h>
-// #include <ifaddrs.h>
-// #include <pthread.h>
-// #include <sys/types.h>
-// #include <errno.h>
-
-
 
 #define MAX_SS 10
 #define CHARS 256

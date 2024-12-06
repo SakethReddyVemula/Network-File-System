@@ -38,7 +38,6 @@ extern const char *storage_directory;
 
 void error(const char *msg);
 void get_ip_address(char *ip_buffer, size_t buffer_size);
-// void initialize_storage_server(const char *nm_ip, int nm_port);
 void initialize_storage_server(const char *nm_ip, int nm_port, int predefined_client_connection_port);
 
 void recursive_path_search(const char *directory, char ***paths, int *path_count);

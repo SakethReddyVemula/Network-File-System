@@ -312,21 +312,6 @@ void *handle_client(void *arg) {
                     LOG(ss_infos[ss_infos[index]->backup_ss_1]->sockfd, bytesRec, "Action: Sending clinet_to_NM struct to backup");
                     SS_to_NM_struct data;
 
-                    // while (1) {
-                    //     LOG(ss_infos[ss_infos[index]->backup_ss_1]->sockfd, -2, "Action: Receiving SS_to_NM_struct struct to backup");
-                    //     if (recv(ss_infos[ss_infos[index]->backup_ss_1]->sockfd, &data, sizeof(data), 0) <= 0) {
-                    //         return NULL;
-                    //     }
-                    //     LOG(client_sockfd, bytesRec, "Action: Received SS_to_NM_struct struct to backup");
-                    //     LOG(client_sockfd, -2, "Action: Sending SS_to_NM_struct struct to client");
-                    //     if (bytesRec = send(client_sockfd, &data, sizeof(data), 0) < 0) {
-                    //         return NULL;
-                    //     }
-                    //     LOG(client_sockfd, bytesRec, "Action: Sent SS_to_NM_struct struct to client");
-                    //     if (data.stop) {
-                    //         break;
-                    //     }
-                    // }
                     memset(data.buffer, 0, sizeof(data.buffer));
                     while (strlen(data.buffer) == 0){
                         recv(ss_infos[ss_infos[index]->backup_ss_1]->sockfd, &data, sizeof(data), MSG_WAITALL);

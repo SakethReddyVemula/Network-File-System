@@ -4,15 +4,6 @@
 // A mapping of characters to the index they are stored in the trie. a-z will be 0-25 and / will be 26
 int char_to_index_mapping(char c)
 {
-    // if (c == '/'){
-    //     return 26;
-    // }
-    // else if (c == '.'){
-    //     return 27;
-    // }
-    // else{
-    //     return c - 'a';
-    // }
     return c;
 }
 
@@ -249,97 +240,6 @@ int createNewFile(char *filePath, char *filePath2)
     return curr->ss_index;
 }
 
-// int handle_copy(char *dest, char *src) {
-//     // Check if destination ends with '/'
-//     if (dest[strlen(dest) - 1] != '/') {
-//         return INVALID_PATH;
-//     }
-    
-//     // Find last slash in source path
-//     int lastSlash = -1;
-//     for (int i = 0; src[i] != '\0'; i++) {
-//         if (src[i] == '/') {
-//             lastSlash = i;
-//         }
-//     }
-//     if (lastSlash == -1) {
-//         return INVALID_PATH;
-//     }
-    
-//     // Validate storage server indices
-//     int srcIdx = get_storage_server_index(src);
-//     if (srcIdx == -1) {
-//         return INVALID_PATH;
-//     }
-    
-//     int destIdx = get_storage_server_index(dest);
-//     if (destIdx == -1) {
-//         return INVALID_PATH;
-//     }
-    
-//     client_to_NM ss_operation;
-//     int ack;
-    
-//     // Create operation for destination
-//     ss_operation.oper = CREATE;
-//     strcpy(ss_operation.file_path, dest);
-//     strcpy(ss_operation.file_path_2, src + lastSlash + 1);
-//     if (send(ss_infos[destIdx]->sockfd, &ss_operation, sizeof(ss_operation), 0) < 0) {
-//         return INVALID_PATH;
-//     }
-//     if (recv(ss_infos[destIdx]->sockfd, &ack, sizeof(int), 0) <= 0) {
-//         return INVALID_PATH;
-//     }
-    
-//     // Read operation from source
-//     ss_operation.oper = READ;
-//     strcpy(ss_operation.file_path, src);
-//     if (send(ss_infos[srcIdx]->sockfd, &ss_operation, sizeof(ss_operation), 0) < 0) {
-//         return INVALID_PATH;
-//     }
-    
-//     // Write operation to destination
-//     ss_operation.oper = WRITE;
-//     strcpy(ss_operation.file_path, dest);
-//     strcat(ss_operation.file_path, src + lastSlash + 1);
-    
-//     // Update the trie with new path
-//     add_to_trie(ss_operation.file_path, destIdx);
-    
-//     if (send(ss_infos[destIdx]->sockfd, &ss_operation, sizeof(ss_operation), 0) < 0) {
-//         return INVALID_PATH;
-//     }
-    
-//     // Forward all data
-//     SS_to_NM_struct data;
-//     while (1) {
-//         ssize_t bytes_received = recv(ss_infos[srcIdx]->sockfd, &data, sizeof(data), 0);
-//         if (bytes_received <= 0) {
-//             return INVALID_PATH;
-//         }
-        
-//         if (data.stop) {
-//             // Forward the stop signal
-//             if (send(ss_infos[destIdx]->sockfd, &data, sizeof(data), 0) < 0) {
-//                 return INVALID_PATH;
-//             }
-//             break;
-//         }
-        
-//         // Forward the data
-//         if (send(ss_infos[destIdx]->sockfd, &data, sizeof(data), 0) < 0) {
-//             return INVALID_PATH;
-//         }
-//     }
-    
-//     // Wait for final acknowledgment
-//     if (recv(ss_infos[destIdx]->sockfd, &ack, sizeof(int), 0) <= 0) {
-//         return INVALID_PATH;
-//     }
-    
-//     return SUCCESS;
-// }
-
 int handle_copy(char *dest, char *src) {
     if (dest[strlen(dest) - 1] != '/') {
         return INVALID_PATH;
@@ -400,44 +300,11 @@ int handle_copy(char *dest, char *src) {
         return INVALID_PATH;
     }
 
-    
-    
-    // memset(data.buffer, 0, sizeof(data.buffer));
-    
-    // Read operation
-
-    // while (strlen(data.buffer) == 0)
-    // {
-        
-        
-    // }
     printf("The received data is %s\n", data.buffer);
     LOG(ss_infos[destIdx]->sockfd, -2, "Action: Writing copy data to dest SS");
     log_result = send(ss_infos[destIdx]->sockfd, &data, sizeof(data), 0);
     LOG(ss_infos[destIdx]->sockfd, log_result, "Action: Written Data copy data to dest SS");
 
-    // send(ss_infos[destIdx]->sockfd, &data, sizeof(data), 0);
-
-    
-    // Forward all data
-   
-    // while (1) {
-    //     if (recv(ss_infos[srcIdx]->sockfd, &data, sizeof(data), 0) <= 0) {
-    //         printf("Haha recv returned bad");
-    //         return INVALID_PATH;
-    //     }
-    //     printf("Data received: %s\n and stop value of %d\n", data.buffer, data.stop);
-    //     if (send(ss_infos[destIdx]->sockfd, &data, sizeof(data), 0) < 0) {
-    //         return INVALID_PATH;
-    //     }
-        
-    //     if (data.stop == 1) {
-    //         printf("Breaking from data transfer\n");
-    //         break;
-    //     }
-    // }
-   
-     
     int ack;
     // recv(ss_infos[destIdx]->sockfd, &ack, sizeof(int), 0);
     LOG(ss_infos[destIdx]->sockfd, -2, "Action: Waiting for ack from destination SS");
@@ -581,24 +448,6 @@ void copy_to_backup_server(trieNode* curr, char* buffer, int in, int srcIdx, int
             LOG(ss_infos[destIdx]->sockfd, -2, "Action: Writing data to Backup");
             log_result = send(ss_infos[destIdx]->sockfd, &data, sizeof(data), 0);
             LOG(ss_infos[destIdx]->sockfd, log_result, "Action: Wrote data to Backup");
-
-            // send(ss_infos[destIdx]->sockfd, &data, sizeof(data), 0);
-            
-            // Forward all data
-            // SS_to_NM_struct data;
-            // while (1) {
-            //     if (recv(ss_infos[srcIdx]->sockfd, &data, sizeof(data), 0) <= 0) {
-            //         return;
-            //     }
-                
-            //     if (send(ss_infos[destIdx]->sockfd, &data, sizeof(data), 0) < 0) {
-            //         return;
-            //     }
-                
-            //     if (data.stop) {
-            //         break;
-            //     }
-            // }
             
             int ack;
             // recv(ss_infos[destIdx]->sockfd, &ack, sizeof(int), 0);
